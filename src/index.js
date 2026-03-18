@@ -4,6 +4,7 @@ const stacksListener = require('./stacksListener');
 const stacksClient = require('./stacksClient');
 const solanaClient = require('./solanaClient');
 const store = require('./nonceStore');
+const express = require('express');
 
 // Retry helper: retries a fn up to maxRetries times with exponential backoff.
 async function withRetry(fn, maxRetries = 3, baseDelayMs = 2000) {
@@ -66,13 +67,38 @@ async function runWithdrawLoop() {
     }
 }
 
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.json({
+        status: 'running',
+        service: 'Aura Bridge Relayer',
+        network: {
+            stacks: config.stacks.network,
+            solana: config.solana.rpcUrl
+        }
+    });
+});
+
 async function main() {
+    logger.info('Starting background loops...');
     await Promise.all([runDepositLoop(), runWithdrawLoop()]);
     setInterval(runDepositLoop, config.relayer.pollIntervalMs);
     setInterval(runWithdrawLoop, config.relayer.pollIntervalMs);
 }
 
+// Start background loops
 main().catch(err => {
-    logger.error(`Fatal: ${err.message}`);
-    process.exit(1);
+    logger.error(`Fatal Loop Error: ${err.message}`);
 });
+
+// For Vercel, we export the app
+// For local dev, we also start the listener
+if (require.main === module) {
+    app.listen(port, () => {
+        logger.info(`Relayer API listening on port ${port}`);
+    });
+}
+
+module.exports = app;
