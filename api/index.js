@@ -1,9 +1,9 @@
-const config = require('./config');
-const logger = require('./logger');
-const stacksListener = require('./stacksListener');
-const stacksClient = require('./stacksClient');
-const solanaClient = require('./solanaClient');
-const store = require('./nonceStore');
+const config = require('../src/config');
+const logger = require('../src/logger');
+const stacksListener = require('../src/stacksListener');
+const stacksClient = require('../src/stacksClient');
+const solanaClient = require('../src/solanaClient');
+const store = require('../src/nonceStore');
 const express = require('express');
 
 // Retry helper: retries a fn up to maxRetries times with exponential backoff.
