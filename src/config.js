@@ -19,7 +19,7 @@ module.exports = {
     },
     relayer: {
         pollIntervalMs: parseInt(process.env.POLL_INTERVAL_MS) || 5000,
-        dbPath: process.env.DB_PATH || './aura-relayer.db',
+        dbPath: process.env.VERCEL ? '/tmp/aura-relayer.db' : (process.env.DB_PATH || './aura-relayer.db'),
         logLevel: process.env.LOG_LEVEL || 'info',
     },
 };
