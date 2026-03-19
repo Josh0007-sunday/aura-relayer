@@ -22,7 +22,7 @@ async function withRetry(fn, maxRetries = 3, baseDelayMs = 2000) {
 
 logger.info('Aura Bridge Relayer starting...');
 logger.info(`  Stacks : ${config.stacks.network}`);
-logger.info(`  Solana : ${config.solana.rpcUrl}`);
+logger.info(`  Solana : ${config.solana.network}`);
 logger.info(`  Poll   : ${config.relayer.pollIntervalMs}ms`);
 
 let isDepositing = false;
@@ -76,7 +76,7 @@ app.get('/', (req, res) => {
         service: 'Aura Bridge Relayer',
         network: {
             stacks: config.stacks.network,
-            solana: config.solana.rpcUrl
+            solana: config.solana.network
         }
     });
 });

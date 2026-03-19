@@ -13,6 +13,7 @@ module.exports = {
     },
     solana: {
         rpcUrl: process.env.SOLANA_RPC_URL,
+        network: (process.env.SOLANA_RPC_URL || '').includes('devnet') ? 'devnet' : 'mainnet-beta',
         programId: process.env.SOLANA_PROGRAM_ID,
         ssolMint: process.env.SSOL_MINT_ADDRESS,
         relayerKey: JSON.parse(process.env.RELAYER_SOLANA_PRIVATE_KEY || '[]'),
