@@ -5,6 +5,7 @@ const stacksClient = require('../src/stacksClient');
 const solanaClient = require('../src/solanaClient');
 const store = require('../src/nonceStore');
 const express = require('express');
+const cors = require('cors');
 
 // Retry helper: retries a fn up to maxRetries times with exponential backoff.
 async function withRetry(fn, maxRetries = 3, baseDelayMs = 2000) {
@@ -68,6 +69,7 @@ async function runWithdrawLoop() {
 }
 
 const app = express();
+app.use(cors());
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
@@ -78,6 +80,15 @@ app.get('/', (req, res) => {
             stacks: config.stacks.network,
             solana: config.solana.network
         }
+    });
+});
+
+app.get('/status/:id', (req, res) => {
+    const { id } = req.params;
+    const isProcessed = store.isDepositProcessed(id) || store.isBurnProcessed(id);
+    res.json({
+        id,
+        status: isProcessed ? 'Confirmed' : 'Processing'
     });
 });
 
