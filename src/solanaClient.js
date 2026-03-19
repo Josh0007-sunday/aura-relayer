@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 const config = require('./config');
 const store = require('./nonceStore');
 const logger = require('./logger');
-const idl = require('../../contracts/solana/idl.json');
+const idl = require('./idl/idl.json');
 
 // Force IPv4 to prevent Node 20+ AggregateError timeouts on Helius / RPCs
 const connection = new Connection(config.solana.rpcUrl, {

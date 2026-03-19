@@ -7,7 +7,7 @@ require('dotenv').config();
 const anchor = require('@project-serum/anchor');
 const { Connection, Keypair, PublicKey, SystemProgram } = require('@solana/web3.js');
 const fs = require('fs');
-const idl = require('../../contracts/solana/idl.json');
+const idl = require('./idl/idl.json');
 const logger = require('./logger');
 
 async function init() {
